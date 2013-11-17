@@ -30,6 +30,13 @@ var Q = window.Q = Quintus({development:true})
             // And turn on default input controls and touch input (for UI)
         .controls().touch()
 
+        Q.input.keyboardControls({
+            LEFT: "left",
+            RIGHT: "right",
+            SPACE: "up",
+            UP: "ladder"
+        });
+
 // ## Player Sprite
 // The very basic player sprite, this is just a normal sprite
 // using the player sprite sheet with default controls added to it.
@@ -39,7 +46,6 @@ Q.Sprite.extend("Player",{
   init: function(p) {
 
     UPBUTTON = false;
-
 
     // You can call the parent's constructor with this._super(..)
     this._super(p, {
@@ -70,7 +76,7 @@ Q.Sprite.extend("Player",{
         this.refreshMatrix();
         Q._invoke(this.children,"frame",dt);
 
-        if(Q.inputs['up']) {UPBUTTON=true;}
+        if(Q.inputs['ladder']) {UPBUTTON=true;}
         else {UPBUTTON=false;}
 
     }
@@ -142,18 +148,13 @@ Q.scene("level1",function(stage) {
   // Create the player and add them to the stage
   var player = stage.insert(new Q.Player());
 
-  // Give the stage a moveable viewport and tell it
-  // to follow the player.
+  // CREATE VIEWPORT
+
+  zoomInteger = 1;
+
   stage.add("viewport").follow(player,{ x: false, y: true });
-
-  // Add in a couple of enemies
-//  stage.insert(new Q.Enemy({ x: 700, y: 0 }));
-//  stage.insert(new Q.Enemy({ x: 800, y: 0 }));
-//  stage.insert(new Q.Enemy({ x: 800, y: 600 }));
-
-  // Add in the tower goal
-//  stage.insert(new Q.Tower({ x: 180, y: 50 }));
-
+  stage.viewport.offsetY = 366*(1/zoomInteger);
+  stage.viewport.scale = 1*zoomInteger;
 
 });
 
